@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{106AE906-5075-410A-B941-912F811848EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-powered-Resume-Builder.Domain", "src\AI-powered-Resume-Builder.Domain\AI-powered-Resume-Builder.Domain.csproj", "{31A00363-F979-4978-8BF8-0CC8D60A98FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-powered-Resume-Builder.Application", "src\AI-powered-Resume-Builder.Application\AI-powered-Resume-Builder.Application.csproj", "{2057E02D-7E2A-481D-A8AC-0556E816690E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-powered-Resume-Builder.Infrastructure", "src\AI-powered-Resume-Builder.Infrastructure\AI-powered-Resume-Builder.Infrastructure.csproj", "{E2E2F1C8-FE6B-48BD-A7D9-A321AE99F5BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-powered-Resume-Builder.WebApi", "src\AI-powered-Resume-Builder.WebApi\AI-powered-Resume-Builder.WebApi.csproj", "{DE889BB2-5060-4364-8A0C-1465AA9304DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80601C5D-D434-4E9B-8CEE-AE261C1F4EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80601C5D-D434-4E9B-8CEE-AE261C1F4EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80601C5D-D434-4E9B-8CEE-AE261C1F4EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80601C5D-D434-4E9B-8CEE-AE261C1F4EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A00363-F979-4978-8BF8-0CC8D60A98FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A00363-F979-4978-8BF8-0CC8D60A98FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A00363-F979-4978-8BF8-0CC8D60A98FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A00363-F979-4978-8BF8-0CC8D60A98FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2057E02D-7E2A-481D-A8AC-0556E816690E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2057E02D-7E2A-481D-A8AC-0556E816690E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2057E02D-7E2A-481D-A8AC-0556E816690E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2057E02D-7E2A-481D-A8AC-0556E816690E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2E2F1C8-FE6B-48BD-A7D9-A321AE99F5BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2E2F1C8-FE6B-48BD-A7D9-A321AE99F5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2E2F1C8-FE6B-48BD-A7D9-A321AE99F5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2E2F1C8-FE6B-48BD-A7D9-A321AE99F5BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE889BB2-5060-4364-8A0C-1465AA9304DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE889BB2-5060-4364-8A0C-1465AA9304DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE889BB2-5060-4364-8A0C-1465AA9304DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE889BB2-5060-4364-8A0C-1465AA9304DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{31A00363-F979-4978-8BF8-0CC8D60A98FB} = {106AE906-5075-410A-B941-912F811848EE}
+		{2057E02D-7E2A-481D-A8AC-0556E816690E} = {106AE906-5075-410A-B941-912F811848EE}
+		{E2E2F1C8-FE6B-48BD-A7D9-A321AE99F5BD} = {106AE906-5075-410A-B941-912F811848EE}
+		{DE889BB2-5060-4364-8A0C-1465AA9304DB} = {106AE906-5075-410A-B941-912F811848EE}
+	EndGlobalSection
+EndGlobal

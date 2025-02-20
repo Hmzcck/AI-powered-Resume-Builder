@@ -1,0 +1,6 @@
+@AI_powered_Resume_Builder.WebApi_HostAddress = http://localhost:5280
+
+GET {{AI_powered_Resume_Builder.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
