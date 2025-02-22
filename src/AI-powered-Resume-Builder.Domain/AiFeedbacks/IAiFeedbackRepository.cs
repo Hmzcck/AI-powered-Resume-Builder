@@ -8,6 +8,6 @@ public interface IAiFeedbackRepository
     Task<IEnumerable<AiFeedback>> GetByUserIdAsync(Guid userId);
     Task<AiFeedback> CreateAsync(AiFeedback feedback);
     Task<AiFeedback> UpdateAsync(AiFeedback feedback);
-    Task DeleteAsync(Guid id);
+    Task DeleteAsync(AiFeedback feedback);
     Task<bool> ExistsAsync(Guid id);
 }

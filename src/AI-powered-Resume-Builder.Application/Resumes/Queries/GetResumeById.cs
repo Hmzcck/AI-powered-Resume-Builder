@@ -25,7 +25,7 @@ internal sealed class GetResumeByIdQueryHandler(IResumeRepository resumeReposito
         if (!currentUserService.IsAuthenticated)
             throw new UnauthorizedAccessException("User is not authenticated");
 
-        var resume = await resumeRepository.GetByIdAsync(request.Id);
+        var resume = await resumeRepository.GetByUserIdAndIdAsync(currentUserService.UserId, request.Id);
 
         if (resume == null)
             throw new Exception("Resume not found");
