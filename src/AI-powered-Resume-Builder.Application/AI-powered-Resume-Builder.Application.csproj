@@ -7,4 +7,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="AiFeedbacks/" />
+    <Folder Include="Resumes/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../AI-powered-Resume-Builder.Domain/AI-powered-Resume-Builder.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
