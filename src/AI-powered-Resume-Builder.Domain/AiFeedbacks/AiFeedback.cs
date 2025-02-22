@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json;
 using AI_powered_Resume_Builder.Domain.Common;
 using AI_powered_Resume_Builder.Domain.Resumes;
@@ -6,7 +5,7 @@ using AI_powered_Resume_Builder.Domain.Resumes;
 namespace AI_powered_Resume_Builder.Domain.AiFeedbacks;
 
 
-public class AIFeedback : BaseEntity
+public class AiFeedback : BaseEntity
 {
     public JsonDocument Improvements { get; set; } = default!;
     public List<string> MissingKeywords { get; set; } = default!;

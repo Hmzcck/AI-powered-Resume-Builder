@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json;
 using AI_powered_Resume_Builder.Domain.AiFeedbacks;
 using AI_powered_Resume_Builder.Domain.Common;
@@ -21,7 +20,7 @@ public class Resume : BaseEntity
     public List<string> TargetJobDescriptions { get; set; }
 
     // 1-1 relationship
-    public AIFeedback? AIFeedback { get; set; }
+    public AiFeedback? AIFeedback { get; set; }
 
     // 1-N relationship
     public required Guid ApplicationUserId { get; set; }
