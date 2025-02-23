@@ -11,4 +11,9 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../AI-powered-Resume-Builder.Application/AI-powered-Resume-Builder.Application.csproj" />
+    <ProjectReference Include="../AI-powered-Resume-Builder.Infrastructure/AI-powered-Resume-Builder.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
