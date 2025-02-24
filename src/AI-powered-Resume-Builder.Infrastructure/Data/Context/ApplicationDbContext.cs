@@ -1,4 +1,3 @@
-using System;
 using AI_powered_Resume_Builder.Domain.AiFeedbacks;
 using AI_powered_Resume_Builder.Domain.Resumes;
 using AI_powered_Resume_Builder.Domain.Users;
@@ -31,7 +30,7 @@ namespace AI_powered_Resume_Builder.Infrastructure.Data.Context;
 
 
             builder.Entity<Resume>()
-            .HasOne(r => r.AIFeedback)
+            .HasOne(r => r.AiFeedback)
             .WithOne(af => af.Resume)
             .HasForeignKey<AiFeedback>(af => af.ResumeId)
             .IsRequired(false);

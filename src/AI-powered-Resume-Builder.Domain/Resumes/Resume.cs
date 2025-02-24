@@ -14,7 +14,7 @@ public class Resume : BaseEntity
     public List<string>? TargetJobDescriptions { get; set; }
 
     // 1-1 relationship
-    public AiFeedback? AIFeedback { get; set; }
+    public AiFeedback? AiFeedback { get; set; }
 
     // 1-N relationship
     public required Guid ApplicationUserId { get; set; }
