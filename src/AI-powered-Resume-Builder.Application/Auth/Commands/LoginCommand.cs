@@ -1,4 +1,5 @@
 using System;
+using AI_powered_Resume_Builder.Application.Services;
 using AI_powered_Resume_Builder.Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,8 @@ public record LoginCommandResponse(
 );
 
 
-internal sealed class LoginCommandHandler(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : IRequestHandler<LoginCommand, LoginCommandResponse>
+internal sealed class LoginCommandHandler(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
+IJwtService jwtService) : IRequestHandler<LoginCommand, LoginCommandResponse>
 {
     public async Task<LoginCommandResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
@@ -36,8 +38,8 @@ internal sealed class LoginCommandHandler(UserManager<ApplicationUser> userManag
             throw new Exception("Invalid password");
         }
 
-        // TODO: Generate JWT token
+        var token = await jwtService.CreateTokenAsync(user);
 
-        return new LoginCommandResponse("token", "refreshToken", DateTime.Now.AddDays(7));
+        return new LoginCommandResponse(token, "refreshToken", DateTime.Now.AddDays(7));
     }
 }
