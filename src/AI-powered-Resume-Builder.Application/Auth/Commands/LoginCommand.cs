@@ -15,7 +15,12 @@ public sealed record LoginCommand(
 public record LoginCommandResponse(
     string Token,
     string RefreshToken,
-    DateTime Expires
+    UserDto User
+);
+
+public record UserDto(
+    Guid Id,
+    string Email
 );
 
 
@@ -40,6 +45,6 @@ IJwtService jwtService) : IRequestHandler<LoginCommand, LoginCommandResponse>
 
         var token = await jwtService.CreateTokenAsync(user);
 
-        return new LoginCommandResponse(token, "refreshToken", DateTime.Now.AddDays(7));
+        return new LoginCommandResponse(token, "refreshToken", new UserDto(user.Id, user.Email!));
     }
 }

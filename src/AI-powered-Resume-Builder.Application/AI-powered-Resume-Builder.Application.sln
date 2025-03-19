@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-powered-Resume-Builder.Application", "AI-powered-Resume-Builder.Application.csproj", "{15D1E507-EB1B-46D0-E183-0E6A7F388886}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15D1E507-EB1B-46D0-E183-0E6A7F388886}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D1E507-EB1B-46D0-E183-0E6A7F388886}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D1E507-EB1B-46D0-E183-0E6A7F388886}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D1E507-EB1B-46D0-E183-0E6A7F388886}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B964332-FA24-478C-83FC-E270F43ED093}
+	EndGlobalSection
+EndGlobal
