@@ -224,6 +224,12 @@ export const useResumeStore = create<ResumeStore>((set) => ({
 
       // Extract resume data from response structure
       const response = await resumeService.getResumeById(id);
+
+      if (!response.ok) {
+        console.error("Failed to load resume:", response.error);
+        throw new Error("Failed to load resume");
+      }
+
       const resume = response.resume;
 
       if (!resume || typeof resume !== "object") {
