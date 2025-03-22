@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useResumeStore } from "@/stores/resume-store";
 import { ResumeInnerNavbar } from "@/components/resume-builder/ResumeInnerNavbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
