@@ -5,6 +5,7 @@ import { useResumeStore } from "@/stores/resume-store";
 import { ResumeInnerNavbar } from "@/components/resume-builder/ResumeInnerNavbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ResumeFormSections } from "@/components/resume-builder/ResumeFormSections";
 
 interface ResumeBuilderProps {
   resumeId?: string;
@@ -16,9 +17,7 @@ function SectionBuilderSkeleton() {
         <CardTitle>Section Builder</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-20 w-full" />
-        <Skeleton className="h-4 w-1/2" />
+
       </CardContent>
     </Card>
   );
@@ -71,7 +70,7 @@ export function ResumeBuilder({ resumeId }: Readonly<ResumeBuilderProps>) {
       <div className="flex flex-1 overflow-hidden bg-muted/10">
         {/* Main Content - Interactive Builder */}
         <div className="w-1/3 p-6 overflow-y-auto border-r">
-          <SectionBuilderSkeleton />
+        <ResumeFormSections />
         </div>
 
         {/* Middle Panel - Dynamic Content */}
