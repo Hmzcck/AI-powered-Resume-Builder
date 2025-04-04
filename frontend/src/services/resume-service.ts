@@ -29,4 +29,29 @@ export const resumeService = {
       throw error;
     }
   },
+  async GenerateResumeSection(sectionTitle: string, resumeContent: string) {
+    try {
+      const response = await fetch(`${API_URL}/Ai/generate-resume-section`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sectionTitle,
+          resumeContent,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate AI content");
+      }
+
+      const data = await response.json();
+      console.log("Generated AI content:", data);
+      return data;
+    } catch (error) {
+      console.error("Error generating AI content:", error);
+      throw error;
+    }
+  }
 };

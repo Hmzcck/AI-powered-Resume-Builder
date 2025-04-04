@@ -6,6 +6,7 @@ import { ResumeInnerNavbar } from "@/components/resume-builder/ResumeInnerNavbar
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ResumeFormSections } from "@/components/resume-builder/ResumeFormSections";
+import { PdfPreview } from "@/components/resume-builder/preview/PdfPreview";
 
 interface ResumeBuilderProps {
   resumeId?: string;
@@ -16,9 +17,7 @@ function SectionBuilderSkeleton() {
       <CardHeader>
         <CardTitle>Section Builder</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-
-      </CardContent>
+      <CardContent className="space-y-4"></CardContent>
     </Card>
   );
 }
@@ -30,7 +29,7 @@ function PDFPreviewSkeleton() {
         <CardTitle>Preview</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Skeleton className="h-[600px] w-full" />
+        <PdfPreview />
       </CardContent>
     </Card>
   );
@@ -70,12 +69,12 @@ export function ResumeBuilder({ resumeId }: Readonly<ResumeBuilderProps>) {
       <div className="flex flex-1 overflow-hidden bg-muted/10">
         {/* Main Content - Interactive Builder */}
         <div className="w-1/3 p-6 overflow-y-auto border-r">
-        <ResumeFormSections />
+          <ResumeFormSections />
         </div>
 
         {/* Middle Panel - Dynamic Content */}
         <div className="w-1/3 p-6 overflow-y-auto border-r">
-          <PDFPreviewSkeleton />
+          <PdfPreview />
         </div>
 
         {/* Right Panel - AI Part */}

@@ -1,13 +1,23 @@
 "use client";
 import { useResumeStore } from "@/stores/resume-store";
+import { resumeService } from "@/services/resume-service";
 import { useUIStore } from "@/stores/ui-store";
 import { RichTextEditor } from "@/components/resume-builder/shared/RichTextEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { GripVertical, Plus, Minus, Wand2 } from "lucide-react";
 import { PersonalInfoEditor } from "./editors/PersonalInfoEditor";
 import { ExperienceEditor } from "./editors/ExperienceEditor";
@@ -49,37 +59,14 @@ async function handleAIBuild(
   sections: Section[],
   updateSection: (sectionId: string, content: string) => void
 ) {
-  try {
-    // Filter out personal section and combine all other sections
-    const resumeContent = sections
-      .filter((section) => section.type !== "personal")
-      .map((section) => `${section.header}:\n${section.content}`)
-      .join("\n\n");
+  // Filter out personal section and combine all other sections
+  const resumeContent = sections
+    .filter((section) => section.type !== "personal")
+    .map((section) => `${section.header}:\n${section.content}`)
+    .join("\n\n");
 
-    const response = await fetch(
-      "http://localhost:5235/api/Ai/generate-resume-section",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sectionTitle: header,
-          resumeContent: resumeContent,
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to generate AI content");
-    }
-
-    const data = await response.json();
-    console.log("Generated AI content:", data);
-    updateSection(sectionId, data.section.content);
-  } catch (error) {
-    console.error("Error generating AI content:", error);
-  }
+  const data = await resumeService.GenerateResumeSection(header, resumeContent);
+  updateSection(sectionId, data.section.content);
 }
 
 function LoadingBar() {
@@ -212,7 +199,10 @@ function SortableSection({
 
   return (
     <Card ref={setNodeRef} style={style}>
-      <Collapsible open={!isMinimized} onOpenChange={() => toggleSectionMinimized(section.id)}>
+      <Collapsible
+        open={!isMinimized}
+        onOpenChange={() => toggleSectionMinimized(section.id)}
+      >
         <CardHeader className="p-4">
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex gap-2 flex-shrink-0">
@@ -225,7 +215,11 @@ function SortableSection({
               </div>
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
-                  {isMinimized ? <Plus className="h-4 w-4" /> : <Minus className="h-4 w-4" />}
+                  {isMinimized ? (
+                    <Plus className="h-4 w-4" />
+                  ) : (
+                    <Minus className="h-4 w-4" />
+                  )}
                 </Button>
               </CollapsibleTrigger>
             </div>
@@ -240,7 +234,14 @@ function SortableSection({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={() => handleAIBuild(section.id, section.header, sections, updateSection)}
+                    onClick={() =>
+                      handleAIBuild(
+                        section.id,
+                        section.header,
+                        sections,
+                        updateSection
+                      )
+                    }
                     className="gap-2 whitespace-nowrap"
                     variant="default"
                     size="sm"
@@ -257,9 +258,7 @@ function SortableSection({
           </div>
         </CardHeader>
         <CollapsibleContent>
-          <CardContent className="p-4 pt-0">
-            {renderEditor()}
-          </CardContent>
+          <CardContent className="p-4 pt-0">{renderEditor()}</CardContent>
         </CollapsibleContent>
       </Collapsible>
     </Card>
