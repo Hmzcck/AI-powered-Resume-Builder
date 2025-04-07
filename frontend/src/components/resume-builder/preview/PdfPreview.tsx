@@ -6,48 +6,7 @@ import { useResumeStore } from "@/stores/resume-store";
 import styles from "./PdfPreview.module.css";
 import { renderSectionContent } from "@/utils/SectionRenderers";
 import { Section } from "@/types/resume/sections";
-
-const stripHtml = (html: string): string => {
-  return html.replace(/<[^>]*>/g, "").trim();
-};
-
-const hasContent = (type: string, content: string): boolean => {
-  try {
-    if (!content) return false;
-
-    // For structured content sections
-    if (
-      [
-        "education",
-        "experience",
-        "projects",
-        "certifications",
-        "languages",
-        "awards",
-        "publications",
-        "references",
-      ].includes(type)
-    ) {
-      const parsed = JSON.parse(content);
-      const items = Array.isArray(parsed) ? parsed : [parsed];
-      return items.length > 0;
-    }
-
-    // For personal info section
-    if (type === "personal") {
-      const info = JSON.parse(content);
-      return Object.values(info).some(
-        (val) => val && String(val).trim() !== ""
-      );
-    }
-
-    // For rich text sections (summary, skills)
-    // Remove HTML tags and check if there's any text content
-    return stripHtml(content) !== "";
-  } catch {
-    return false;
-  }
-};
+import { hasContent, groupSectionsIntoPages } from "@/utils/PdfPagination";
 
 export function PdfPreview() {
   const { sections } = useResumeStore();
@@ -82,40 +41,6 @@ export function PdfPreview() {
       }, 0); // Wait for zoom transform to apply
     }
   }, [zoom]); // Re-center when zoom changes
-
-  // Group sections into pages based on content
-  const groupSectionsIntoPages = (sections: Section[]) => {
-    const pages: Section[][] = [[]];
-    let currentPage = 0;
-    let sectionsWithContentOnCurrentPage = 0;
-
-    sections.forEach((section) => {
-      // Personal info always starts on first page
-      if (section.type === "personal") {
-        pages[0].push(section);
-        return;
-      }
-
-      // Only count sections that have actual content
-      if (hasContent(section.type, section.content)) {
-        sectionsWithContentOnCurrentPage++;
-      }
-
-      // Check if current page has enough non-empty sections
-      if (sectionsWithContentOnCurrentPage >= 3) {
-        currentPage++;
-        pages[currentPage] = [];
-        sectionsWithContentOnCurrentPage = 0;
-      }
-
-      pages[currentPage].push(section);
-    });
-
-    // If we have empty pages at the end, remove them
-    return pages.filter(page => page.some(section => 
-      hasContent(section.type, section.content)
-    ));
-  };
 
   const pages = groupSectionsIntoPages(displaySections);
 
