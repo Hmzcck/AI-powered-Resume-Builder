@@ -76,7 +76,11 @@ export const resumeService = {
       throw error;
     }
   },
-  async CalculateResumeScore(contentSections: SectionType[]) {
+  async CalculateResumeScore(contentSections: Array<{
+    type: SectionType;
+    header: string;
+    content: string;
+  }>) {
     try {
       const response = await fetch(`${API_URL}/Ai/calculate-score`, {
         method: "POST",
@@ -124,7 +128,11 @@ export const resumeService = {
     }
   },
   async GenerateResumeFromJobDescription(
-    contentSections: SectionType[],
+    contentSections: Array<{
+      type: SectionType;
+      header: string;
+      content: string;
+    }>,
     jobDescriptions: string[],
     useCurrentResumeInfo: boolean = false
   ) {

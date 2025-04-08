@@ -2,18 +2,25 @@
 // Fake PDF Renderer on the right panel
 
 import React from "react";
+import { Button } from "@/components/ui/button";
 import { useResumeStore } from "@/stores/resume-store";
+import { useAIStore } from "@/stores/ai-store";
 import styles from "./PdfPreview.module.css";
 import { renderSectionContent } from "@/utils/SectionRenderers";
-import { Section } from "@/types/resume/sections";
 import { hasContent, groupSectionsIntoPages } from "@/utils/PdfPagination";
+import { Minus, Plus } from "lucide-react";
 
-export function PdfPreview() {
+interface PdfPreviewProps {
+  isAIPreview?: boolean;
+}
+
+export function PdfPreview({ isAIPreview = false }: PdfPreviewProps) {
   const { sections } = useResumeStore();
+  const aiStore = useAIStore();
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   // Use AI preview sections when in AI preview mode, otherwise use regular sections
-  const displaySections = sections;
+  const displaySections = isAIPreview ? aiStore.previewSections ?? [] : sections;
 
   const [zoom, setZoom] = React.useState(100);
 
@@ -47,16 +54,29 @@ export function PdfPreview() {
   return (
     <div className={styles.previewWrapper} ref={wrapperRef}>
       <div className={styles.innerWrapper}>
-        <div className={styles.zoomControls}>
-          <button onClick={handleZoomOut} className={styles.zoomButton}>
-            -
-          </button>
-          <button onClick={handleResetZoom} className={styles.zoomButton}>
+        <div className="flex items-center gap-2 absolute right-4 top-4 bg-background/80 backdrop-blur-sm p-2 rounded-lg border shadow-sm">
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={handleZoomOut}
+          >
+            <Minus className="h-4 w-4" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={handleResetZoom}
+            className="min-w-[4rem]"
+          >
             {zoom}%
-          </button>
-          <button onClick={handleZoomIn} className={styles.zoomButton}>
-            +
-          </button>
+          </Button>
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={handleZoomIn}
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
         </div>
         <div
           className={styles.previewContainer}

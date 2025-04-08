@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ResumeFormSections } from "@/components/resume-builder/ResumeFormSections";
 import { PdfPreview } from "@/components/resume-builder/preview/PdfPreview";
+import { AIPanel } from "@/components/resume-builder/ai/AIPanel";
 
 interface ResumeBuilderProps {
   resumeId?: string;
@@ -79,7 +80,7 @@ export function ResumeBuilder({ resumeId }: Readonly<ResumeBuilderProps>) {
 
         {/* Right Panel - AI Part */}
         <div className="w-1/3 p-6 overflow-y-auto">
-          <AIPanelSkeleton />
+          <AIPanel/>
         </div>
       </div>
     </div>
