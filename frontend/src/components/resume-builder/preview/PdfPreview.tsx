@@ -7,9 +7,9 @@ import { useResumeStore } from "@/stores/resume-store";
 import { useAIStore } from "@/stores/ai-store";
 import styles from "./PdfPreview.module.css";
 import { renderSectionContent } from "@/utils/SectionRenderers";
-import { hasContent, groupSectionsIntoPages } from "@/utils/PdfPagination";
+import { groupSectionsIntoPages } from "@/utils/PdfPagination";
 import { Minus, Plus } from "lucide-react";
-
+import type { Section } from "@/types/resume/sections";
 interface PdfPreviewProps {
   isAIPreview?: boolean;
 }
@@ -20,7 +20,7 @@ export function PdfPreview({ isAIPreview = false }: PdfPreviewProps) {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   // Use AI preview sections when in AI preview mode, otherwise use regular sections
-  const displaySections = isAIPreview ? aiStore.previewSections ?? [] : sections;
+  const displaySections: Section[] = isAIPreview ? aiStore.previewSections ?? [] : sections;
 
   const [zoom, setZoom] = React.useState(100);
 
@@ -49,8 +49,21 @@ export function PdfPreview({ isAIPreview = false }: PdfPreviewProps) {
     }
   }, [zoom]); // Re-center when zoom changes
 
-  const pages = groupSectionsIntoPages(displaySections);
+  // Filter out empty sections
+  const nonEmptySections = displaySections.filter(section => {
+    if (typeof section.content === 'string') {
+      return section.content.trim() !== '';
+    }
+    if (Array.isArray(section.content)) {
+      return section.content.length > 0;
+    }
+    if (section.type === 'personal' && typeof section.content === 'object') {
+      return Object.values(section.content).some(val => val && String(val).trim() !== '');
+    }
+    return false;
+  });
 
+  const pages = groupSectionsIntoPages(nonEmptySections);
   return (
     <div className={styles.previewWrapper} ref={wrapperRef}>
       <div className={styles.innerWrapper}>
@@ -86,12 +99,11 @@ export function PdfPreview({ isAIPreview = false }: PdfPreviewProps) {
             <div key={pageIndex} className={styles.page}>
               {pageSections.map((section) => (
                 <div key={section.id} className={styles.sectionContainer}>
-                  {section.type !== "personal" &&
-                    hasContent(section.type, section.content) && (
-                      <h2 className={styles.sectionHeader}>{section.header}</h2>
-                    )}
+                  {section.type !== "personal" && (
+                    <h2 className={styles.sectionHeader}>{section.header}</h2>
+                  )}
                   <div className={styles.richTextContent}>
-                    {renderSectionContent(section.type, section.content)}
+                    {renderSectionContent(section)}
                   </div>
                 </div>
               ))}

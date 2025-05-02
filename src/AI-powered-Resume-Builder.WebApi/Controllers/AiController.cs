@@ -1,5 +1,5 @@
-using System.Text.Json;
 using AI_powered_Resume_Builder.Application.DTOs;
+using AI_powered_Resume_Builder.Application.Mapping;
 using AI_powered_Resume_Builder.Application.Services;
 using AI_powered_Resume_Builder.Infrastructure.DTOs;
 using AI_powered_Resume_Builder.WebApi.Common;
@@ -23,48 +23,149 @@ public class AiController : ApiController
     }
 
     [HttpPost("generate-resume")]
-    public async Task<ActionResult<JsonDocument>> GenerateResume([FromBody] GenerateResumeRequest generateResumeRequest)
+    public async Task<ActionResult<ResumeDto>> GenerateResume([FromBody] GenerateResumeRequest generateResumeRequest)
     {   
-        var result = await _resumeGenerationService.GenerateResumeContentAsync(generateResumeRequest);
-        return Ok(result);
+        try 
+        {
+            if (string.IsNullOrEmpty(generateResumeRequest?.Prompt))
+            {
+                return BadRequest("Prompt cannot be null or empty");
+            }
+
+            var result = await _resumeGenerationService.GenerateResumeContentAsync(generateResumeRequest);
+            
+            try 
+            {
+                var resumeDto = ResumeMappingExtensions.FromJsonDocument(result);
+                return Ok(resumeDto);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine($"Failed to deserialize resume: {ex.Message}");
+                return BadRequest($"Invalid resume format: {ex.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error generating resume: {ex.Message}");
+            return StatusCode(500, "An error occurred while generating the resume");
+        }
     }
 
-    public record GenerateResumeFromJobsRequest(JsonDocument Content, List<string> JobDescriptions, bool UseCurrentResumeInfo = false);
+    public record GenerateResumeFromJobsRequest(ResumeDto Content, List<string> JobDescriptions, bool UseCurrentResumeInfo = false);
 
     [HttpPost("generate-resume-from-jobs")]
-    public async Task<ActionResult<JsonDocument>> GenerateResumeFromJobs([FromBody] GenerateResumeFromJobsRequest request)
+    public async Task<ActionResult<ResumeDto>> GenerateResumeFromJobs([FromBody] GenerateResumeFromJobsRequest request)
     {
-        var result = await _resumeGenerationService.GenerateResumeContentWithJobDescriptionAsync(
-            request.Content,
-            request.JobDescriptions,
-            request.UseCurrentResumeInfo);
-        
-        return Ok(result);
+        try
+        {
+            if (request?.Content == null)
+            {
+                return BadRequest("Resume content cannot be null");
+            }
+            if (request.JobDescriptions == null || !request.JobDescriptions.Any())
+            {
+                return BadRequest("Job descriptions cannot be null or empty");
+            }
+
+            var result = await _resumeGenerationService.GenerateResumeContentWithJobDescriptionAsync(
+                request.Content.ToJsonDocument(),
+                request.JobDescriptions,
+                request.UseCurrentResumeInfo);
+            
+            try
+            {
+                var resumeDto = ResumeMappingExtensions.FromJsonDocument(result);
+                return Ok(resumeDto);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine($"Failed to deserialize resume: {ex.Message}");
+                return BadRequest($"Invalid resume format: {ex.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error generating resume from jobs: {ex.Message}");
+            return StatusCode(500, "An error occurred while generating the resume from job descriptions");
+        }
     }
 
-    public record GenerateResumeSectionRequest(string SectionTitle, JsonDocument ResumeContent);
+    public record GenerateResumeSectionRequest(string SectionTitle, ResumeDto ResumeContent);
 
     [HttpPost("generate-resume-section")]
-    public async Task<ActionResult<JsonDocument>> GenerateResumeSection([FromBody] GenerateResumeSectionRequest request)
+    public async Task<ActionResult<ResumeDto>> GenerateResumeSection([FromBody] GenerateResumeSectionRequest request)
     {
-        var result = await _resumeGenerationService.GenerateResumeSectionAsync(
-            request.SectionTitle,
-            request.ResumeContent);
-        
-        return Ok(result);
+        try
+        {
+            if (string.IsNullOrEmpty(request?.SectionTitle))
+            {
+                return BadRequest("Section title cannot be null or empty");
+            }
+            if (request.ResumeContent == null)
+            {
+                return BadRequest("Resume content cannot be null");
+            }
+
+            var result = await _resumeGenerationService.GenerateResumeSectionAsync(
+                request.SectionTitle,
+                request.ResumeContent.ToJsonDocument());
+            
+            try
+            {
+                var resumeDto = ResumeMappingExtensions.FromJsonDocument(result);
+                return Ok(resumeDto);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine($"Failed to deserialize resume section: {ex.Message}");
+                return BadRequest($"Invalid resume format: {ex.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error generating resume section: {ex.Message}");
+            return StatusCode(500, "An error occurred while generating the resume section");
+        }
     }
 
     [HttpPost("generate-feedback/{resumeId}")]
     public async Task<ActionResult<AiFeedbackDto>> GenerateResumeFeedback(Guid resumeId)
     {
-        var result = await _resumeAnalysisService.GenerateFeedbackAsync(resumeId);
-        return Ok(result);
+        try
+        {
+            if (resumeId == Guid.Empty)
+            {
+                return BadRequest("Invalid resume ID");
+            }
+
+            var result = await _resumeAnalysisService.GenerateFeedbackAsync(resumeId);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error generating feedback: {ex.Message}");
+            return StatusCode(500, "An error occurred while generating the resume feedback");
+        }
     }
 
     [HttpPost("calculate-score")]
-    public async Task<ActionResult<int>> CalculateResumeScore([FromBody] JsonDocument resumeContent)
+    public async Task<ActionResult<int>> CalculateResumeScore([FromBody] ResumeDto resumeContent)
     {
-        var result = await _resumeAnalysisService.CalculateResumeScoreAsync(resumeContent);
-        return Ok(result);
+        try
+        {
+            if (resumeContent == null)
+            {
+                return BadRequest("Resume content cannot be null");
+            }
+
+            var result = await _resumeAnalysisService.CalculateResumeScoreAsync(resumeContent.ToJsonDocument());
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error calculating resume score: {ex.Message}");
+            return StatusCode(500, "An error occurred while calculating the resume score");
+        }
     }
 }

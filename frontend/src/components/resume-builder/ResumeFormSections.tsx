@@ -122,6 +122,7 @@ function SortableSection({
     return <SectionSkeleton />;
   }
 
+
   const renderEditor = () => {
     switch (section.type) {
       case "personal":

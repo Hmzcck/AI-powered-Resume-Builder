@@ -1,8 +1,7 @@
 const API_URL = "http://localhost:5235/api";
 
+import { AiFeedbackDto, ResumeDto } from "@/types/resume/models";
 import { ResumeFormData } from "@/lib/validations/resume";
-import { SectionType } from "@/types/resume/sections";
-import { UUID } from "crypto";
 
 export const resumeService = {
   async getResumeById(id: string) {
@@ -31,16 +30,16 @@ export const resumeService = {
       throw error;
     }
   },
-  async GenerateResumeSection(sectionTitle: string, resumeContent: string) {
+  async GenerateResumeSection(sectionTitle: string, resumeContent: ResumeDto): Promise<ResumeDto> {
     try {
       const response = await fetch(`${API_URL}/Ai/generate-resume-section`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          sectionTitle,
-          resumeContent,
+        body: JSON.stringify({ 
+          sectionTitle, 
+          resumeContent 
         }),
       });
 
@@ -49,14 +48,13 @@ export const resumeService = {
       }
 
       const data = await response.json();
-      console.log("Generated AI content:", data);
       return data;
     } catch (error) {
       console.error("Error generating AI content:", error);
       throw error;
     }
   },
-  async GenerateResume(prompt: string) {
+  async GenerateResume(prompt: string): Promise<ResumeDto> {
     try {
       const response = await fetch(`${API_URL}/Ai/generate-resume`, {
         method: "POST",
@@ -76,20 +74,14 @@ export const resumeService = {
       throw error;
     }
   },
-  async CalculateResumeScore(contentSections: Array<{
-    type: SectionType;
-    header: string;
-    content: string;
-  }>) {
+  async CalculateResumeScore(resumeContent: ResumeDto): Promise<number> {
     try {
       const response = await fetch(`${API_URL}/Ai/calculate-score`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ResumeContent: JSON.stringify(contentSections),
-        }),
+        body: JSON.stringify(resumeContent),
       });
 
       if (!response.ok) {
@@ -103,10 +95,10 @@ export const resumeService = {
       throw error;
     }
   },
-  async GenerateFeedback(resumeId: UUID) {
+  async GenerateFeedback(resumeId: string): Promise<AiFeedbackDto> {
     try {
       const response = await fetch(
-        `${API_URL}/Ai/generate-feedback/{resumeId}`,
+        `${API_URL}/Ai/generate-feedback/${resumeId}`,
         {
           method: "POST",
           headers: {
@@ -128,24 +120,20 @@ export const resumeService = {
     }
   },
   async GenerateResumeFromJobDescription(
-    contentSections: Array<{
-      type: SectionType;
-      header: string;
-      content: string;
-    }>,
+    content: ResumeDto,
     jobDescriptions: string[],
     useCurrentResumeInfo: boolean = false
-  ) {
+  ): Promise<ResumeDto> {
     try {
-      const response = await fetch(`${API_URL}/Ai/generate-from-jobs`, {
+      const response = await fetch(`${API_URL}/Ai/generate-resume-from-jobs`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ResumeContent: JSON.stringify(contentSections),
-          JobDescriptions: jobDescriptions,
-          UseCurrentResumeInfo: useCurrentResumeInfo,
+          content,
+          jobDescriptions,
+          useCurrentResumeInfo,
         }),
       });
       if (!response.ok) {

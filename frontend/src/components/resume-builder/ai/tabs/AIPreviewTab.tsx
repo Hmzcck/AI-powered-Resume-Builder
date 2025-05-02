@@ -13,9 +13,13 @@ export const AIPreviewTab = () => {
   const { setAITab } = useUIStore();
   const { previewSections, clearPreview, isGenerating } = useAIStore();
 
+  console.log("AIPreviewTab - Initial previewSections:", previewSections);
+
   const handleAcceptAI = () => {
     if (previewSections) {
+      console.log("PreviewTab - Sections being passed to updateFromAIContent:", previewSections);
       updateFromAIContent(previewSections);
+      console.log("PreviewTab - After updateFromAIContent call");
       clearPreview();
       setAITab("build");
     }

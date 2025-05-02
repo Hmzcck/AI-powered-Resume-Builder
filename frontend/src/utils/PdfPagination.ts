@@ -10,111 +10,102 @@ export const stripHtml = (html: string): string => {
 /**
  * Checks if a section has valid content
  */
-export const hasContent = (type: string, content: string): boolean => {
-  try {
-    if (!content) return false;
+import type {
+  ExperienceDto,
+  EducationDto,
+  SkillDto,
+  ProjectDto,
+  CertificationDto,
+  LanguageDto,
+  AwardDto,
+  PublicationDto,
+  ReferenceDto,
+} from "@/types/resume/models";
 
-    // For structured content sections
-    if (
-      [
-        "education",
-        "experience",
-        "projects",
-        "certifications",
-        "languages",
-        "awards",
-        "publications",
-        "references",
-      ].includes(type)
-    ) {
-      const parsed = JSON.parse(content);
-      const items = Array.isArray(parsed) ? parsed : [parsed];
-      return items.length > 0;
-    }
+type PersonalInfo = {
+  name: string;
+  email: string;
+  phone?: string;
+  location?: string;
+  website?: string;
+};
 
-    // For personal info section
-    if (type === "personal") {
-      const info = JSON.parse(content);
-      return Object.values(info).some(
-        (val) => val && String(val).trim() !== ""
-      );
-    }
+type SectionContent =
+  | string
+  | PersonalInfo
+  | ExperienceDto[]
+  | EducationDto[]
+  | SkillDto[]
+  | ProjectDto[]
+  | CertificationDto[]
+  | LanguageDto[]
+  | AwardDto[]
+  | ReferenceDto[]
+  | PublicationDto[];
 
-    // For rich text sections (summary, skills)
-    // Remove HTML tags and check if there's any text content
-    return stripHtml(content) !== "";
-  } catch {
-    return false;
+export const hasContent = (type: string, content: SectionContent): boolean => {
+  if (!content) return false;
+
+  // For array-based sections
+  if (Array.isArray(content)) {
+    return content.length > 0;
   }
+
+  // For personal info section
+  if (type === "personal" && typeof content === "object") {
+    return Object.values(content).some(
+      (val) => val && String(val).trim() !== ""
+    );
+  }
+
+  // For string content (either HTML or plain text)
+  if (typeof content === "string") {
+    return stripHtml(content) !== "";
+  }
+
+  return false;
 };
 
 /**
  * Estimates content size in lines based on section type and content
  */
 export const estimateContentSize = (section: Section): number => {
-  try {
-    const { type, content } = section;
-    
-    if (!content || !hasContent(type, content)) {
-      return 0;
-    }
-
-    // Basic line count from text
-    let estimatedLines = 0;
-    
-    // Header takes at least one line
-    if (type !== "personal") {
-      estimatedLines += 2; // Section header + spacing
-    }
-
-    // For structured content, estimate based on item count and typical item size
-    if (["education", "experience", "projects"].includes(type)) {
-      try {
-        const parsed = JSON.parse(content);
-        const items = Array.isArray(parsed) ? parsed : [parsed];
-        
-        // Estimate each item takes ~7-10 lines depending on section type
-        const linesPerItem = type === "experience" ? 10 : 
-                            type === "education" ? 7 : 
-                            type === "projects" ? 8 : 6;
-        
-        estimatedLines += items.length * linesPerItem;
-      } catch {
-        // Fallback for unparseable content
-        estimatedLines += 5;
-      }
-    } 
-    // For smaller structured sections
-    else if (["certifications", "languages", "awards", "references", "publications"].includes(type)) {
-      try {
-        const parsed = JSON.parse(content);
-        const items = Array.isArray(parsed) ? parsed : [parsed];
-        
-        // Estimate each item takes ~3-5 lines
-        const linesPerItem = type === "references" ? 5 : 
-                            type === "publications" ? 5 : 3;
-                            
-        estimatedLines += items.length * linesPerItem;
-      } catch {
-        estimatedLines += 3;
-      }
-    }
-    // For personal info (typically at top)
-    else if (type === "personal") {
-      estimatedLines += 3;
-    }
-    // For text content (summary, skills)
-    else {
-      // Estimate 1 line per ~80 characters, with a minimum of 2 lines
-      const textLength = stripHtml(content).length;
-      estimatedLines += Math.max(2, Math.ceil(textLength / 80));
-    }
-    
-    return estimatedLines;
-  } catch {
-    // Default fallback if estimation fails
-    return 3;
+  const { type, content } = section;
+  
+  if (!content) {
+    return 0;
   }
+
+  let estimatedLines = 0;
+  
+  // Header takes at least one line
+  if (type !== "personal") {
+    estimatedLines += 2; // Section header + spacing
+  }
+
+  // For array content, estimate based on item count and typical item size
+  if (Array.isArray(content)) {
+    const linesPerItem = 
+      type === "experience" ? 10 :
+      type === "education" ? 7 :
+      type === "projects" ? 8 :
+      type === "references" || type === "publications" ? 5 :
+      3; // Default for other array-based sections
+
+    estimatedLines += content.length * linesPerItem;
+  }
+  // For personal info (typically at top)
+  else if (type === "personal") {
+    estimatedLines += 3;
+  }
+  // For text content (summary, skills)
+  else if (typeof content === "string") {
+    // Estimate 1 line per ~80 characters, with a minimum of 2 lines
+    const textLength = stripHtml(content).length;
+    estimatedLines += Math.max(2, Math.ceil(textLength / 80));
+  }
+  
+  return estimatedLines;
 };
 
 /**
