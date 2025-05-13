@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import parse from "html-react-parser";
 import styles from "@/components/resume-builder/preview/PdfPreview.module.css";
 import type { Section } from "@/types/resume/sections";
@@ -23,7 +23,7 @@ type PersonalInfo = {
 };
 
 const renderPersonalInfo = (content: PersonalInfo | string) => {
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -38,7 +38,7 @@ const renderPersonalInfo = (content: PersonalInfo | string) => {
   );
 };
 const renderEducation = (content: EducationDto[] | string) => {
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -47,26 +47,25 @@ const renderEducation = (content: EducationDto[] | string) => {
         <div
           key={index}
           className={styles.education}
-          style={index > 0 ? { marginTop: '1.5rem' } : undefined}
+          style={index > 0 ? { marginTop: "1.5rem" } : undefined}
         >
           <div className={styles.schoolName}>{edu.institution}</div>
           <div className={styles.degreeAndMajor}>
             {edu.degree} in {edu.fieldOfStudy}
           </div>
           <div className={styles.dates}>
-            {formatDate(edu.startDate)} - {!edu.endDate ? "Present" : formatDate(edu.endDate)}
+            {formatDate(edu.startDate)} -{" "}
+            {!edu.endDate ? "Present" : formatDate(edu.endDate)}
           </div>
-          {edu.location && <div className={styles.location}>{edu.location}</div>}
+          {edu.location && (
+            <div className={styles.location}>{edu.location}</div>
+          )}
           {edu.gpa && <div className={styles.gpa}>GPA: {edu.gpa}</div>}
           {edu.description && (
-            <div className={styles.description}>
-              {parse(edu.description)}
-            </div>
+            <div className={styles.description}>{parse(edu.description)}</div>
           )}
           {edu.achievements && (
-            <div className={styles.achievements}>
-              {parse(edu.achievements)}
-            </div>
+            <div className={styles.achievements}>{parse(edu.achievements)}</div>
           )}
         </div>
       ))}
@@ -76,7 +75,7 @@ const renderEducation = (content: EducationDto[] | string) => {
 
 const renderExperience = (content: ExperienceDto[] | string) => {
   console.log("Experience content editor:", content);
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -85,7 +84,7 @@ const renderExperience = (content: ExperienceDto[] | string) => {
         <div
           key={index}
           className={styles.experience}
-          style={index > 0 ? { marginTop: '1.5rem' } : undefined}
+          style={index > 0 ? { marginTop: "1.5rem" } : undefined}
         >
           <div className={styles.jobTitle}>{experience.position}</div>
           <div className={styles.companyName}>{experience.company}</div>
@@ -116,7 +115,7 @@ const renderExperience = (content: ExperienceDto[] | string) => {
 };
 
 const renderCertifications = (content: CertificationDto[] | string) => {
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -125,7 +124,7 @@ const renderCertifications = (content: CertificationDto[] | string) => {
         <div
           key={index}
           className={styles.certification}
-          style={index > 0 ? { marginTop: '1.5rem' } : undefined}
+          style={index > 0 ? { marginTop: "1.5rem" } : undefined}
         >
           <div className={styles.certName}>{cert.name}</div>
           <div className={styles.certIssuer}>{cert.issuingOrganization}</div>
@@ -150,7 +149,7 @@ const renderCertifications = (content: CertificationDto[] | string) => {
 };
 
 const renderProjects = (content: ProjectDto[] | string) => {
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -159,7 +158,7 @@ const renderProjects = (content: ProjectDto[] | string) => {
         <div
           key={index}
           className={styles.project}
-          style={index > 0 ? { marginTop: '1.5rem' } : undefined}
+          style={index > 0 ? { marginTop: "1.5rem" } : undefined}
         >
           <div className={styles.projectName}>{project.name}</div>
           {project.technologies && (
@@ -169,13 +168,11 @@ const renderProjects = (content: ProjectDto[] | string) => {
           )}
           {(project.startDate || project.endDate) && (
             <div className={styles.dates}>
-              {project.startDate ? formatDate(project.startDate) : ''} -{" "}
+              {project.startDate ? formatDate(project.startDate) : ""} -{" "}
               {!project.endDate ? "Present" : formatDate(project.endDate)}
             </div>
           )}
-          <div className={styles.description}>
-            {parse(project.description)}
-          </div>
+          <div className={styles.description}>{parse(project.description)}</div>
           {project.link && (
             <div className={styles.projectLink}>
               Project Link: {project.link}
@@ -188,7 +185,7 @@ const renderProjects = (content: ProjectDto[] | string) => {
 };
 
 const renderAwards = (content: AwardDto[] | string) => {
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -197,7 +194,7 @@ const renderAwards = (content: AwardDto[] | string) => {
         <div
           key={index}
           className={styles.award}
-          style={index > 0 ? { marginTop: '1.5rem' } : undefined}
+          style={index > 0 ? { marginTop: "1.5rem" } : undefined}
         >
           <div className={styles.awardName}>{award.title}</div>
           <div className={styles.issuer}>{award.issuingOrganization}</div>
@@ -211,14 +208,10 @@ const renderAwards = (content: AwardDto[] | string) => {
             <div className={styles.level}>Level: {award.level}</div>
           )}
           {award.url && (
-            <div className={styles.awardLink}>
-              Link: {award.url}
-            </div>
+            <div className={styles.awardLink}>Link: {award.url}</div>
           )}
           {award.description && (
-            <div className={styles.description}>
-              {parse(award.description)}
-            </div>
+            <div className={styles.description}>{parse(award.description)}</div>
           )}
         </div>
       ))}
@@ -227,7 +220,7 @@ const renderAwards = (content: AwardDto[] | string) => {
 };
 
 const renderLanguages = (content: LanguageDto[] | string) => {
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -236,7 +229,7 @@ const renderLanguages = (content: LanguageDto[] | string) => {
         <div
           key={index}
           className={styles.language}
-          style={index > 0 ? { marginTop: '0.75rem' } : undefined}
+          style={index > 0 ? { marginTop: "0.75rem" } : undefined}
         >
           <div className={styles.languageName}>{lang.name}</div>
           <div className={styles.proficiency}>{lang.proficiencyLevel}</div>
@@ -246,9 +239,7 @@ const renderLanguages = (content: LanguageDto[] | string) => {
             </div>
           )}
           {lang.additionalInfo && (
-            <div className={styles.additionalInfo}>
-              {lang.additionalInfo}
-            </div>
+            <div className={styles.additionalInfo}>{lang.additionalInfo}</div>
           )}
         </div>
       ))}
@@ -257,7 +248,7 @@ const renderLanguages = (content: LanguageDto[] | string) => {
 };
 
 const renderReferences = (content: ReferenceDto[] | string) => {
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -266,7 +257,7 @@ const renderReferences = (content: ReferenceDto[] | string) => {
         <div
           key={index}
           className={styles.reference}
-          style={index > 0 ? { marginTop: '1.5rem' } : undefined}
+          style={index > 0 ? { marginTop: "1.5rem" } : undefined}
         >
           <div className={styles.refName}>{ref.name}</div>
           <div className={styles.jobTitle}>{ref.position}</div>
@@ -277,9 +268,7 @@ const renderReferences = (content: ReferenceDto[] | string) => {
             </div>
           )}
           {ref.description && (
-            <div className={styles.description}>
-              {parse(ref.description)}
-            </div>
+            <div className={styles.description}>{parse(ref.description)}</div>
           )}
         </div>
       ))}
@@ -288,7 +277,7 @@ const renderReferences = (content: ReferenceDto[] | string) => {
 };
 
 const renderPublications = (content: PublicationDto[] | string) => {
-  if (typeof content === 'string') {
+  if (typeof content === "string") {
     return renderRichText(content);
   }
   return (
@@ -297,7 +286,7 @@ const renderPublications = (content: PublicationDto[] | string) => {
         <div
           key={index}
           className={styles.publication}
-          style={index > 0 ? { marginTop: '1.5rem' } : undefined}
+          style={index > 0 ? { marginTop: "1.5rem" } : undefined}
         >
           <div className={styles.pubTitle}>{pub.title}</div>
           {pub.authors && <div className={styles.authors}>{pub.authors}</div>}
@@ -305,28 +294,20 @@ const renderPublications = (content: PublicationDto[] | string) => {
           <div className={styles.dates}>
             Published: {formatDate(pub.publicationDate)}
           </div>
-          {pub.type && (
-            <div className={styles.type}>Type: {pub.type}</div>
-          )}
+          {pub.type && <div className={styles.type}>Type: {pub.type}</div>}
           {(pub.doi || pub.url) && (
             <div className={styles.doi}>
               {pub.doi ? `DOI: ${pub.doi}` : `URL: ${pub.url}`}
             </div>
           )}
           {pub.citation && (
-            <div className={styles.citation}>
-              Citation: {pub.citation}
-            </div>
+            <div className={styles.citation}>Citation: {pub.citation}</div>
           )}
           {pub.impact && (
-            <div className={styles.impact}>
-              Impact: {pub.impact}
-            </div>
+            <div className={styles.impact}>Impact: {pub.impact}</div>
           )}
           {pub.description && (
-            <div className={styles.description}>
-              {parse(pub.description)}
-            </div>
+            <div className={styles.description}>{parse(pub.description)}</div>
           )}
         </div>
       ))}
@@ -339,65 +320,97 @@ const renderRichText = (content: string) => {
 };
 
 const renderSkills = (content: SkillDto[] | string) => {
-  // If content is a string, render it as rich text
-  if (typeof content === 'string') {
-    return renderRichText(content);
+  console.log("Skills content received:", content);
+  
+  // If content is a string, render it directly as rich text (most common case with our SkillsEditor)
+  if (typeof content === "string") {
+    try {
+      return renderRichText(content);
+    } catch (error) {
+      console.error("Error parsing skills HTML content:", error);
+      return <div className="skills-plain-text">{content}</div>;
+    }
   }
 
-  try {
-    // Group skills by category
-    const groupedSkills = content.reduce((acc, skill) => {
-      const category = skill.category || 'Other';
-      if (!acc[category]) {
-        acc[category] = [];
-      }
-      acc[category].push(skill);
-      return acc;
-    }, {} as Record<string, SkillDto[]>);
-
-    return (
-      <div>
-        {Object.entries(groupedSkills).map(([category, skills]) => (
-          <div key={category} className={styles.skillCategory}>
-            <div className={styles.categoryName}>{category}</div>
-            <div className={styles.skillList}>
-              {skills.map((skill, index) => (
-                <div key={index} className={styles.skill}>
-                  <div className={styles.skillName}>
-                    {skill.name}
-                    {skill.yearsOfExperience > 0 && ` (${skill.yearsOfExperience}+ years)`}
+  // Legacy support for SkillDto[] format
+  if (Array.isArray(content) && content.length > 0) {
+    try {
+      // Group skills by category
+      const groupedSkills = content.reduce((acc, skill) => {
+        if (!skill) return acc;
+        
+        const category = skill.category || "Other";
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push(skill);
+        return acc;
+      }, {} as Record<string, SkillDto[]>);
+      
+      // Render grouped skills
+      return (
+        <div>
+          {Object.entries(groupedSkills).map(([category, skills]) => (
+            <div key={category} className={styles.skillCategory}>
+              <div className={styles.categoryName}>{category}</div>
+              <div className={styles.skillList}>
+                {skills.map((skill) => (
+                  <div key={`${category}-${skill.name || "unnamed"}`} className={styles.skill}>
+                    <div className={styles.skillName}>
+                      {skill.name || ""}
+                      {skill.yearsOfExperience > 0 && 
+                        ` (${skill.yearsOfExperience}+ years)`}
+                    </div>
+                    {skill.proficiencyLevel && (
+                      <div className={styles.proficiencyLevel}>
+                        Level: {skill.proficiencyLevel}/5
+                      </div>
+                    )}
+                    {skill.description && (
+                      <div className={styles.skillDescription}>
+                        {skill.description}
+                      </div>
+                    )}
                   </div>
-                  {skill.proficiencyLevel && (
-                    <div className={styles.proficiencyLevel}>
-                      Level: {skill.proficiencyLevel}/5
-                    </div>
-                  )}
-                  {skill.description && (
-                    <div className={styles.skillDescription}>
-                      {parse(skill.description)}
-                    </div>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    );
-  } catch (error) {
-    console.error('Error rendering skills:', error);
-    // If there's an error, fall back to rendering as rich text
-    return renderRichText(typeof content === 'string' ? content : JSON.stringify(content));
+          ))}
+        </div>
+      );      } catch (error) {
+      console.error("Error rendering skills array:", error);
+      // Try to convert the array to a string representation
+      const formattedContent = content.reduce((acc, skill) => {
+        if (!skill?.name) return acc;
+        const category = skill.category || "Other";
+        
+        if (!acc[category]) acc[category] = [];
+        acc[category].push(skill.name);
+        return acc;
+      }, {} as Record<string, string[]>);
+      
+      // Convert the grouped format to HTML
+      const htmlContent = Object.entries(formattedContent)
+        .map(([category, skillNames]) => 
+          `<p><strong>${category}:</strong> ${skillNames.join(', ')}</p>`
+        )
+        .join('');
+        
+      return renderRichText(htmlContent);
+    }
   }
+  
+  // If content is empty or not in a recognized format
+  return <div className="skills-empty">No skills listed</div>;
 };
 
 // Helper function to format dates consistently
 const formatDate = (date: Date | string | undefined): string => {
-  if (!date) return '';
+  if (!date) return "";
   const d = new Date(date);
-  return d.toLocaleDateString('en-US', { 
-    month: 'long',
-    year: 'numeric'
+  return d.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
   });
 };
 
@@ -430,6 +443,6 @@ const renderSection = (section: Section): React.ReactNode => {
   }
 };
 
-export const renderSectionContent = (section: Section): React.ReactNode => {
-  return renderSection(section);
-};
+export function renderSectionContent(section: Section): JSX.Element {
+  return <>{renderSection(section)}</>;
+}

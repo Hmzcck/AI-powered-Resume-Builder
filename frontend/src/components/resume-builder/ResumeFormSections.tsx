@@ -29,6 +29,7 @@ import { LanguagesEditor } from "./editors/LanguagesEditor";
 import { AwardsEditor } from "./editors/AwardsEditor";
 import { PublicationsEditor } from "./editors/PublicationsEditor";
 import { ReferencesEditor } from "./editors/ReferencesEditor";
+import { SkillsEditor } from "./editors/SkillsEditor";
 import {
   DndContext,
   closestCenter,
@@ -170,6 +171,13 @@ function SortableSection({
       case "awards":
         return (
           <AwardsEditor
+            value={section.content}
+            onChange={(content) => updateSection(section.id, content)}
+          />
+        );
+      case "skills":
+        return (
+          <SkillsEditor
             value={section.content}
             onChange={(content) => updateSection(section.id, content)}
           />
