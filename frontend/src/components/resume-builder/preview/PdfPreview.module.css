@@ -30,23 +30,153 @@
   background: white;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   position: relative;
+  font-family: 'Source Sans 3', sans-serif;
 }
 
 .sectionContainer {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.8cm;
+}
+
+.sectionContainer:last-child {
+  margin-bottom: 0;
 }
 
 .sectionHeader {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: hsl(var(--foreground));
-  margin-bottom: 0.75rem;
-  border-bottom: 2px solid hsl(var(--border));
-  padding-bottom: 0.25rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #004F90;
+  margin-bottom: 0.3cm;
+  padding-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.15cm;
+}
+
+.sectionHeader::after {
+  content: '';
+  flex: 1;
+  height: 0.8pt;
+  background-color: #000;
+  margin-left: 0.15cm;
+  margin-top: 0.1cm;
 }
 
 .richTextContent {
-  font-size: 0.875rem;
+  font-size: 10pt;
   line-height: 1.5;
-  color: hsl(var(--foreground));
+  color: #000;
+}
+
+/* Personal Information Styles */
+.personalInfo {
+  text-align: center;
+  margin-bottom: 0.3cm;
+  line-height: 1.5;
+}
+
+.name {
+  font-size: 30pt;
+  font-weight: bold;
+  color: #004F90;
+  margin-bottom: 0.3cm;
+  line-height: 1;
+}
+
+.contactInfo {
+  font-size: 10pt;
+  color: #000;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25cm;
+  line-height: normal;
+}
+
+.contactInfo > * {
+  position: relative;
+  padding: 0 0.25cm;
+}
+
+.contactInfo > *:not(:last-child)::after {
+  content: '•';
+  position: absolute;
+  right: -0.125cm;
+}
+
+/* Education & Experience Styles */
+.schoolName, .jobTitle, .projectName {
+  font-weight: bold;
+  font-size: 11pt;
+  margin-bottom: 0.1cm;
+}
+
+.degreeAndMajor, .companyName {
+  font-size: 10pt;
+  margin-bottom: 0.1cm;
+}
+
+.dates, .location {
+  font-size: 10pt;
+  color: #666;
+  margin-bottom: 0.1cm;
+}
+
+.description, .achievements {
+  font-size: 10pt;
+  margin-top: 0.2cm;
+  text-align: justify;
+}
+
+.experience, .education {
+  margin-bottom: 0.75cm;
+}
+
+.experience:last-child, .education:last-child {
+  margin-bottom: 0;
+}
+
+.description ul, .achievements ul {
+  list-style-type: disc;
+  padding-left: 0.4cm;
+  margin: 0.1cm 0;
+  line-height: 1.5;
+}
+
+.description ul li, .achievements ul li {
+  margin-bottom: 0.1cm;
+  position: relative;
+}
+
+/* Publications & Projects Styles */
+.pubTitle, .projectName {
+  font-weight: bold;
+  font-size: 11pt;
+}
+
+.authors, .technologies {
+  font-size: 10pt;
+  font-style: italic;
+  margin: 0.1cm 0;
+  color: #444;
+}
+
+/* Skills Section */
+.skillCategory {
+  margin-bottom: 0.5cm;
+}
+
+.categoryName {
+  font-weight: bold;
+  font-size: 11pt;
+  margin-bottom: 0.2cm;
+}
+
+.skillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5cm;
+}
+
+.skill {
+  font-size: 10pt;
 }

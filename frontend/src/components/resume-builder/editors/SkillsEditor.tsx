@@ -38,7 +38,7 @@ export const SkillsEditor = React.forwardRef<unknown, SkillsEditorProps>(
         const groupedSkills: Record<string, string[]> = {};
         props.value.forEach((skill) => {
           const skillObj = skill as Partial<SkillItem>;
-          const category = skillObj.category ?? 'Other';
+          const category = skillObj.category ?? ''; // Change 'Other' to '' (empty string)
           if (!groupedSkills[category]) {
             groupedSkills[category] = [];
           }
@@ -48,7 +48,12 @@ export const SkillsEditor = React.forwardRef<unknown, SkillsEditorProps>(
         });
         
         return Object.entries(groupedSkills)
-          .map(([category, skills]) => `<p><strong>${category}:</strong> ${skills.join(', ')}</p>`)
+          .map(([category, skills]) => {
+            if (category === '') {
+              return `<p>${skills.join(', ')}</p>`;
+            }
+            return `<p><strong>${category}:</strong> ${skills.join(', ')}</p>`;
+          })
           .join('');
       }
       

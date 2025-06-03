@@ -339,7 +339,7 @@ const renderSkills = (content: SkillDto[] | string) => {
       const groupedSkills = content.reduce((acc, skill) => {
         if (!skill) return acc;
         
-        const category = skill.category || "Other";
+        const category = skill.category || "";
         if (!acc[category]) {
           acc[category] = [];
         }
@@ -382,7 +382,7 @@ const renderSkills = (content: SkillDto[] | string) => {
       // Try to convert the array to a string representation
       const formattedContent = content.reduce((acc, skill) => {
         if (!skill?.name) return acc;
-        const category = skill.category || "Other";
+        const category = skill.category || "";
         
         if (!acc[category]) acc[category] = [];
         acc[category].push(skill.name);

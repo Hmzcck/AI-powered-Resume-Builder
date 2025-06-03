@@ -93,7 +93,7 @@ const defaultSections: ResumeSection[] = [
     type: "skills",
     header: "Technical Skills",
     content: [{
-      category: "Skills",
+      category: "",
       skills: [{
         name: "",
         category: "",

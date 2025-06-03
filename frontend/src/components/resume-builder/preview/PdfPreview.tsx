@@ -22,7 +22,7 @@ export function PdfPreview({ isAIPreview = false }: PdfPreviewProps) {
   // Use AI preview sections when in AI preview mode, otherwise use regular sections
   const displaySections: Section[] = isAIPreview ? aiStore.previewSections ?? [] : sections;
 
-  const [zoom, setZoom] = React.useState(100);
+  const [zoom, setZoom] = React.useState(80);
 
   const handleZoomIn = () => {
     setZoom((prev) => Math.min(prev + 10, 200));
